@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:police/helpandsupport.dart';
-import 'package:police/privacy.dart';
-import 'package:police/security.dart';
-import 'package:police/termsandpolicies.dart';
-import 'notification.dart'; // Import NotificationPage
+import 'package:police/view/profile/help_and_support.dart';
+import 'package:police/view/profile/privacy.dart';
+import 'package:police/view/profile/security.dart';
+import 'package:police/view/profile/termsandpolicies.dart';
+import '../notification/notification.dart'; // Import NotificationPage
 // Import TermsAndPoliciesPage
 
 class ProfilePage extends StatelessWidget {

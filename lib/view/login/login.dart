@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:police/main.dart';
+import 'package:police/view/home/home.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
