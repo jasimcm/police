@@ -1,0 +1,143 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:police/core/router/router.dart';
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text("Profile"),
+        backgroundColor: Colors.black,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: ListView(
+          children: [
+            // ListTile(
+            //   title: const Text("Edit Profile"),
+            //   leading: const Icon(Icons.edit),
+            //   onTap: () {
+            //     // Action for Edit Profile
+            //     showDialog(
+            //       context: context,
+            //       builder: (context) => AlertDialog(
+            //         title: const Text("Edit Profile"),
+            //         content: const Text("Edit Profile button clicked."),
+            //         actions: [
+            //           TextButton(
+            //             onPressed: () => Navigator.pop(context),
+            //             child: const Text("Close"),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // ),
+            ListTile(
+              title: const Text("Security"),
+              leading: const Icon(Icons.security),
+              onTap: () {
+                Get.toNamed(RouterName.security);
+              },
+            ),
+
+            ListTile(
+              title: const Text("Privacy"),
+              leading: const Icon(Icons.lock),
+              onTap: () {
+                Get.toNamed(RouterName.privacy);
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Help & Support"),
+              leading: const Icon(Icons.help),
+              onTap: () {
+                Get.toNamed(RouterName.helpSupport);
+              },
+            ),
+            ListTile(
+              title: const Text("Terms and Policies"),
+              leading: const Icon(Icons.policy),
+              onTap: () {
+                Get.toNamed(RouterName.termsConditions);
+              },
+            ),
+            const Divider(),
+            // ListTile(
+            //   title: const Text("Report a Problem"),
+            //   leading: const Icon(Icons.report),
+            //   onTap: () {
+            //     // Action for Report a Problem
+            //     showDialog(
+            //       context: context,
+            //       builder: (context) => AlertDialog(
+            //         title: const Text("Report a Problem"),
+            //         content: const Text("Report a Problem button clicked."),
+            //         actions: [
+            //           TextButton(
+            //             onPressed: () => Navigator.pop(context),
+            //             child: const Text("Close"),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // ),
+            // ListTile(
+            //   title: const Text("Add Account"),
+            //   leading: const Icon(Icons.add),
+            //   onTap: () {
+            //     // Action for Add Account
+            //     showDialog(
+            //       context: context,
+            //       builder: (context) => AlertDialog(
+            //         title: const Text("Add Account"),
+            //         content: const Text("Add Account button clicked."),
+            //         actions: [
+            //           TextButton(
+            //             onPressed: () => Navigator.pop(context),
+            //             child: const Text("Close"),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // ),
+            ListTile(
+              title: const Text("Log Out"),
+              leading: const Icon(Icons.logout),
+              onTap: () {
+                // Log Out Confirmation Dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Log Out"),
+                    content: const Text("Are you sure you want to log out?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.back(),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                          Get.back(); // Simulate logging out
+                        },
+                        child: const Text("Log Out"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

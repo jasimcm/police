@@ -11,17 +11,41 @@ class CaseItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.15),
+              // offset: Offset(0, 5),
+              blurRadius: 5,
+              spreadRadius: 1,
+            )
+          ],
           color: Colors.black,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 0.5,
+          ),
         ),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(caseName, style: TextStyle(fontSize: 16)),
-            CircleAvatar(
-              radius: 8,
-              backgroundColor: color,
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 8,
+                  backgroundColor: color,
+                ),
+                // SizedBox(
+                //   width: 2,
+                // ),
+                // Icon(
+                //   Icons.chevron_right_rounded,
+                //   size: 28,
+                //   color: Colors.grey,
+                // )
+              ],
             ),
           ],
         ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
+import 'package:police/core/router/router.dart';
 import 'package:police/view/login/login.dart';
 
-class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,7 @@ class LandingPage extends StatelessWidget {
               ),
             ).animate(
               onComplete: (controller) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const LoginPage(), // Navigate to LoginPage
-                  ),
-                );
+                Get.offAndToNamed(RouterName.login);
               },
             ).fadeIn(
               duration: Duration(milliseconds: 700),

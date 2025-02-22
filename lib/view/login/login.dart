@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:police/core/router/router.dart';
 import 'package:police/view/home/home.dart';
 
 class LoginPage extends StatelessWidget {
@@ -52,12 +54,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
-                  ),
-                );
+                Get.offAndToNamed(RouterName.home);
               },
               child: const Text("Login"),
             ),
