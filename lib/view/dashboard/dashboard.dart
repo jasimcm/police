@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:police/view/common_widgets/case_item.dart';
 
 class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

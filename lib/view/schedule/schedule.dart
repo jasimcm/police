@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DutySchedulePage extends StatelessWidget {
+  const DutySchedulePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,7 @@ class FilterButton extends StatelessWidget {
   final String label;
   final Color color;
 
-  FilterButton(this.label, this.color);
+  const FilterButton(this.label, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {

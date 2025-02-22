@@ -6,6 +6,8 @@ import 'package:police/view/notification/notification.dart';
 import 'package:police/view/profile/profile.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

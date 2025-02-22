@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CaseItem extends StatelessWidget {
   final String caseName;
   final Color color;
-  CaseItem(this.caseName, this.color);
+  const CaseItem(this.caseName, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {
