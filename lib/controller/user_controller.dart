@@ -41,15 +41,15 @@ class UserController extends GetxController {
 
   setCurrentUser(Map<String, dynamic> user) {
     userResult = user;
-    if (userResult['rank'] == 'Duty Detailer') {
-      log('is Duty Detailer');
-      setAdminUser(true);
-    }
-    else {
-      log('is not Duty Detailer');
-      setAdminUser(false);
-    }
-    update();
+    if (userResult['rank'] == 'Sub Inspector' || userResult['rank'] == 'Circle Inspector') {
+    log('is Admin');
+    setAdminUser(true);
+  } 
+   else {
+    log('is not Admin');
+    setAdminUser(false);
+  }
+  update();
   }
 
   @override

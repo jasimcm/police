@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:policex/controller/home_controller.dart';
+import 'package:policex/controller/user_controller.dart';
 import 'package:policex/view/common_widgets/navbar_item.dart';
+import 'package:policex/view/dashboard/admin_dashboard.dart';
 import 'package:policex/view/dashboard/dashboard.dart';
 import 'package:policex/view/duty/duty.dart';
-import 'package:policex/view/settings/settings.dart';
+import 'package:policex/view/settings/settings.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.find<HomeController>();
+  final UserController userController = Get.find<UserController>(); 
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               GetBuilder<HomeController>(
                 builder: (homeController) {
+
                   switch (homeController.homeIndex) {
                     case 0:
-                      return const DashboardPage(); // ✅ Dashboard Page
+                      if (userController.isAdminUser) {
+                        return AdminDashboard(); // ✅ Admin Dashboard Page
+                      } else {
+                        return DashboardPage(); // ✅ Dashboard Page
+                        }
                     case 1:
                       return const DutySchedulePage(); // ✅ Duty Page
                     case 2:
