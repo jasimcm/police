@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:policex/controller/duty_controller.dart';
-import 'package:policex/controller/user_controller.dart';
-import 'package:policex/core/router/router.dart';
-import 'package:policex/view/common_widgets/case_item.dart';
-import 'package:policex/view/duty/file_report_bottom_sheet.dart';
-import 'package:policex/view/duty/log_incident_bottom_sheet.dart';
-import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
-import 'package:policex/view/duty/submit_expense_bottom_sheet.dart';
+import 'package:PoliceX/controller/duty_controller.dart';
+import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/core/router/router.dart';
+import 'package:PoliceX/view/common_widgets/case_item.dart';
+import 'package:PoliceX/view/duty/file_report_bottom_sheet.dart';
+import 'package:PoliceX/view/duty/log_incident_bottom_sheet.dart';
+import 'package:PoliceX/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:PoliceX/view/duty/submit_expense_bottom_sheet.dart';
 
 class DutySchedulePage extends StatefulWidget {
   const DutySchedulePage({super.key});
@@ -266,35 +266,10 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                   }
                                 },
                                 itemBuilder: (context, index) {
-                                  switch (dutyController.dutyIndex) {
-                                    case 0:
-                                      if (dutyController.cases[index]
-                                          ['status']) {
-                                        return CaseItem(
-                                          dutyController.cases[index]['name'],
-                                          dutyController.cases[index]['color'],
-                                        );
-                                      } else {
-                                        return SizedBox();
-                                      }
-                                    case 1:
-                                      if (!dutyController.cases[index]
-                                          ['status']) {
-                                        return CaseItem(
-                                          dutyController.cases[index]['name'],
-                                          dutyController.cases[index]['color'],
-                                        );
-                                      } else {
-                                        return SizedBox();
-                                      }
-                                    case 2:
-                                      return CaseItem(
-                                        dutyController.cases[index]['name'],
-                                        dutyController.cases[index]['color'],
+                                  return CaseItem(
+                                        dutyController.cases[index]['id'].toString(),
+                                        Colors.red,
                                       );
-                                    default:
-                                      return SizedBox();
-                                  }
                                 },
                               ),
                             ),

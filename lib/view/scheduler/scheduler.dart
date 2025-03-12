@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:policex/controller/scheduler_controller.dart';
+import 'package:PoliceX/controller/scheduler_controller.dart';
 
 class SchedulerPage extends StatefulWidget {
   const SchedulerPage({super.key});

@@ -1,7 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:get/get.dart';
-import 'package:policex/controller/user_controller.dart';
+import 'package:PoliceX/controller/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

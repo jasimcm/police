@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:policex/core/router/router.dart';
-import 'package:policex/view/login/login.dart';
+import 'package:PoliceX/core/router/router.dart';
+import 'package:PoliceX/view/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {

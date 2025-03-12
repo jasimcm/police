@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:policex/core/di/get_di.dart';
-import 'package:policex/core/router/router.dart';
+import 'package:PoliceX/core/di/get_di.dart';
+import 'package:PoliceX/core/router/router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {

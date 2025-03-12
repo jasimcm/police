@@ -1,7 +1,7 @@
 // TODO Implement this library.import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
-import 'package:policex/view/home/home.dart';
-import 'package:policex/view/login/login.dart';
+import 'package:PoliceX/view/home/home.dart';
+import 'package:PoliceX/view/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatefulWidget {

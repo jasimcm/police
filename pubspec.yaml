@@ -1,4 +1,4 @@
-name: policex
+name: PoliceX
 description: "An app dedicated to the management of police stations and their officers."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

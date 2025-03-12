@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:policex/controller/home_controller.dart';
-import 'package:policex/controller/user_controller.dart';
-import 'package:policex/view/common_widgets/navbar_item.dart';
-import 'package:policex/view/dashboard/admin_dashboard.dart';
-import 'package:policex/view/dashboard/dashboard.dart';
-import 'package:policex/view/duty/duty.dart';
-import 'package:policex/view/settings/settings.dart'; 
+import 'package:PoliceX/controller/home_controller.dart';
+import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/view/common_widgets/navbar_item.dart';
+import 'package:PoliceX/view/dashboard/admin_dashboard.dart';
+import 'package:PoliceX/view/dashboard/dashboard.dart';
+import 'package:PoliceX/view/duty/duty.dart';
+import 'package:PoliceX/view/settings/settings.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

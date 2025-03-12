@@ -3,11 +3,11 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:policex/controller/duty_controller.dart';
-import 'package:policex/controller/user_controller.dart';
-import 'package:policex/core/images/images.dart';
-import 'package:policex/services/attendance_service.dart';
-import 'package:policex/view/common_widgets/case_item.dart';
+import 'package:PoliceX/controller/duty_controller.dart';
+import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/core/images/images.dart';
+import 'package:PoliceX/services/attendance_service.dart';
+import 'package:PoliceX/view/common_widgets/case_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -94,8 +94,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       },
                       itemBuilder: (context, index) {
                         return CaseItem(
-                          dutyController.cases[index]['name'],
-                          dutyController.cases[index]['color'],
+                          dutyController.cases[index]['id'].toString(),
+                          Colors.red,
                         );
                       },
                     ),
@@ -154,7 +154,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(
-                        color: Colors.white,
+                         color: Colors.white,
                         width: 2.5,
                       ),
                     ),
@@ -176,8 +176,8 @@ class _DashboardPageState extends State<DashboardPage> {
                           color: Colors.white,
                         ),
                       ),
-                      const Text(
-                        "Circle Inspector",
+                      Text(
+                        userController.userResult['rank'] ?? 'officer',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,

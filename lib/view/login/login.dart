@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:PoliceX/controller/duty_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:policex/controller/home_controller.dart';
-import 'package:policex/controller/user_controller.dart';
-import 'package:policex/view/home/home.dart';
+import 'package:PoliceX/controller/home_controller.dart';
+import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/view/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -94,6 +95,8 @@ class _LoginPageState extends State<LoginPage> {
                   prefs.setString('username', usernameController.text);
                   final HomeController homeController = Get.find<HomeController>();
                   homeController.setHomeIndex(0);
+                  final DutyController dutyController = Get.find<DutyController>();
+                  dutyController.fetchReports();
                   // Navigate to HomeScreen
                   Navigator.pushReplacement(
                     context,
