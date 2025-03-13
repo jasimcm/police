@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:police/controller/scheduler_controller.dart';
-import 'package:police/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:policex/controller/scheduler_controller.dart';
 
 class SchedulerPage extends StatefulWidget {
   const SchedulerPage({super.key});

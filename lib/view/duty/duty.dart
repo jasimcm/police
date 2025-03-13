@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:police/controller/duty_controller.dart';
-import 'package:police/controller/user_controller.dart';
-import 'package:police/core/router/router.dart';
-import 'package:police/view/common_widgets/case_item.dart';
-import 'package:police/view/common_widgets/navbar_item.dart';
-import 'package:police/view/duty/file_report_bottom_sheet.dart';
-import 'package:police/view/duty/log_incident_bottom_sheet.dart';
-import 'package:police/view/duty/start_patrol_bottom_sheet.dart';
-import 'package:police/view/duty/submit_expense_bottom_sheet.dart';
+import 'package:policex/controller/duty_controller.dart';
+import 'package:policex/controller/user_controller.dart';
+import 'package:policex/core/router/router.dart';
+import 'package:policex/view/common_widgets/case_item.dart';
+import 'package:policex/view/duty/file_report_bottom_sheet.dart';
+import 'package:policex/view/duty/log_incident_bottom_sheet.dart';
+import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:policex/view/duty/submit_expense_bottom_sheet.dart';
 
 class DutySchedulePage extends StatefulWidget {
   const DutySchedulePage({super.key});
@@ -83,7 +82,7 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   separatorBuilder: (BuildContext context, int index) {
-                    if (index == 0 && !userController.isAdminUser) {
+                    if (index == 0 && userController.isAdminUser == false) {
                       return SizedBox();
                     }
                     return SizedBox(
@@ -92,7 +91,7 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                   },
                   itemCount: quickActions.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (index == 0 && !userController.isAdminUser) {
+                    if (index == 0 && userController.isAdminUser == false) {
                       return SizedBox();
                     }
                     return GestureDetector(
@@ -230,7 +229,7 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                             SizedBox(
                               height: 24,
                             ),
-                            Container(
+                            SizedBox(
                               height: Get.height * 0.6,
                               child: ListView.separated(
                                 // physics: NeverScrollableScrollPhysics(),

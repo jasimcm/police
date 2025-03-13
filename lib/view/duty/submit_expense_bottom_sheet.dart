@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:police/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
 
 void showExpenseBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -67,18 +66,21 @@ void showExpenseBottomSheet(BuildContext context) {
             ),
             StartPatrolContainer(
               itemName: 'Expense Type',
+              textEditingController: TextEditingController(),
             ),
             SizedBox(
               height: 16,
             ),
             StartPatrolContainer(
               itemName: 'Amount',
+              textEditingController: TextEditingController(),
             ),
             SizedBox(
               height: 24,
             ),
             StartPatrolContainer(
               itemName: 'Receipt No.',
+              textEditingController: TextEditingController(),
             ),
             SizedBox(
               height: 24,

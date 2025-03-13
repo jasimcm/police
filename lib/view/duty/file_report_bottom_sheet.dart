@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:police/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
 
 void showReportBottomSheet(BuildContext context) {
+  TextEditingController typeController = TextEditingController();
+  TextEditingController vehicleNoController = TextEditingController();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -67,18 +68,21 @@ void showReportBottomSheet(BuildContext context) {
             ),
             StartPatrolContainer(
               itemName: 'Type',
+              textEditingController: typeController,
             ),
             SizedBox(
               height: 16,
             ),
             StartPatrolContainer(
               itemName: 'Location',
+              textEditingController: TextEditingController(),
             ),
             SizedBox(
               height: 24,
             ),
             StartPatrolContainer(
               itemName: 'Description',
+              textEditingController: TextEditingController(),
             ),
             SizedBox(
               height: 24,

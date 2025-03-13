@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
@@ -7,9 +9,14 @@ class UserController extends GetxController {
     {'name': 'Evening', 'hours': '06:00PM - 06:00AM'},
   ];
 
+  Map<String, dynamic> userResult = {};
+
+  Map<String, dynamic> casesResult = {};
+
+
   // Variables
   bool isCheckedIn = false;
-  bool isAdminUser = true;
+  bool isAdminUser = false;
   Map<String, dynamic> workShift = {
     'name': 'Morning',
     'hours': '06:00AM - 06:00PM'
@@ -29,6 +36,19 @@ class UserController extends GetxController {
 
   setAdminUser(bool value) {
     isAdminUser = value;
+    update();
+  }
+
+  setCurrentUser(Map<String, dynamic> user) {
+    userResult = user;
+    if (userResult['rank'] == 'Duty Detailer') {
+      log('is Duty Detailer');
+      setAdminUser(true);
+    }
+    else {
+      log('is not Duty Detailer');
+      setAdminUser(false);
+    }
     update();
   }
 

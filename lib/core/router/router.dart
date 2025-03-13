@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:police/view/home/home.dart';
-import 'package:police/view/login/login.dart';
-import 'package:police/view/scheduler/scheduler.dart';
-import 'package:police/view/settings/faq.dart';
-import 'package:police/view/settings/help_and_support.dart';
-import 'package:police/view/settings/privacy.dart';
-import 'package:police/view/settings/security.dart';
-import 'package:police/view/settings/termsandpolicies.dart';
-import 'package:police/view/splash/splash.dart';
+import 'package:policex/view/home/home.dart';
+import 'package:policex/view/login/login.dart';
+import 'package:policex/view/scheduler/scheduler.dart';
+import 'package:policex/view/settings/faq.dart';
+import 'package:policex/view/settings/help_and_support.dart';
+import 'package:policex/view/settings/privacy.dart';
+import 'package:policex/view/settings/security.dart';
+import 'package:policex/view/settings/termsandpolicies.dart';
+import 'package:policex/view/splash/splash.dart';
 
 class AppRoute {
   static const String initialRoute = RouterName.splash;

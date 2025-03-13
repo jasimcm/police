@@ -1,5 +1,5 @@
-name: police
-description: "A new Flutter project."
+name: policex
+description: "An app dedicated to the management of police stations and their officers."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,18 +30,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_animate: ^4.5.2
   google_fonts: ^6.2.1
-  intl: ^0.20.2
+  intl: ^0.19.0
   get: ^4.7.2
+  supabase_flutter: ^2.8.4
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.13.1
+
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

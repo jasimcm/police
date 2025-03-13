@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:police/core/router/router.dart';
-import 'package:police/view/login/login.dart';
+import 'package:policex/core/router/router.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

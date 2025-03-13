@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:police/view/settings/faq.dart';
+import 'package:policex/view/settings/faq.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
   const HelpAndSupportPage({super.key});

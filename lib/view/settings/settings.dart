@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:police/core/router/router.dart';
+import 'package:policex/core/router/router.dart';
+import 'package:policex/view/login/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -17,26 +19,6 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: ListView(
           children: [
-            // ListTile(
-            //   title: const Text("Edit Profile"),
-            //   leading: const Icon(Icons.edit),
-            //   onTap: () {
-            //     // Action for Edit Profile
-            //     showDialog(
-            //       context: context,
-            //       builder: (context) => AlertDialog(
-            //         title: const Text("Edit Profile"),
-            //         content: const Text("Edit Profile button clicked."),
-            //         actions: [
-            //           TextButton(
-            //             onPressed: () => Navigator.pop(context),
-            //             child: const Text("Close"),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // ),
             ListTile(
               title: const Text("Security"),
               leading: const Icon(Icons.security),
@@ -44,7 +26,6 @@ class SettingsPage extends StatelessWidget {
                 Get.toNamed(RouterName.security);
               },
             ),
-
             ListTile(
               title: const Text("Privacy"),
               leading: const Icon(Icons.lock),
@@ -68,76 +49,58 @@ class SettingsPage extends StatelessWidget {
               },
             ),
             const Divider(),
-            // ListTile(
-            //   title: const Text("Report a Problem"),
-            //   leading: const Icon(Icons.report),
-            //   onTap: () {
-            //     // Action for Report a Problem
-            //     showDialog(
-            //       context: context,
-            //       builder: (context) => AlertDialog(
-            //         title: const Text("Report a Problem"),
-            //         content: const Text("Report a Problem button clicked."),
-            //         actions: [
-            //           TextButton(
-            //             onPressed: () => Navigator.pop(context),
-            //             child: const Text("Close"),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // ),
-            // ListTile(
-            //   title: const Text("Add Account"),
-            //   leading: const Icon(Icons.add),
-            //   onTap: () {
-            //     // Action for Add Account
-            //     showDialog(
-            //       context: context,
-            //       builder: (context) => AlertDialog(
-            //         title: const Text("Add Account"),
-            //         content: const Text("Add Account button clicked."),
-            //         actions: [
-            //           TextButton(
-            //             onPressed: () => Navigator.pop(context),
-            //             child: const Text("Close"),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // ),
             ListTile(
               title: const Text("Log Out"),
               leading: const Icon(Icons.logout),
               onTap: () {
-                // Log Out Confirmation Dialog
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text("Log Out"),
-                    content: const Text("Are you sure you want to log out?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Get.back(),
-                        child: const Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.back();
-                          Get.back(); // Simulate logging out
-                        },
-                        child: const Text("Log Out"),
-                      ),
-                    ],
-                  ),
-                );
+                _showLogoutDialog(context);
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  /// ✅ Logout Confirmation Dialog
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Log Out"),
+        content: const Text("Are you sure you want to log out?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context); // Close dialog
+              await _logout(context);
+            },
+            child: const Text("Log Out"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// ✅ Logout Function
+  Future<void> _logout(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear(); // ✅ Clear login state
+
+      // ✅ Navigate to LoginPage and remove all previous routes
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (route) => false,
+      );
+      print('✅ Logged out successfully');
+    } catch (e) {
+      print('❌ Logout failed: $e');
+    }
   }
 }
