@@ -14,6 +14,7 @@ void showPatrolBottomSheet(BuildContext context) {
     isScrollControlled: true,
     builder: (BuildContext context) {
       return Container(
+        height: Get.height * 0.9,
         padding: EdgeInsets.only(
           left: 20,
           right: 20,
@@ -34,7 +35,7 @@ void showPatrolBottomSheet(BuildContext context) {
           ),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
@@ -94,7 +95,7 @@ void showPatrolBottomSheet(BuildContext context) {
             // BottomSheetSubmitButton(),
             GestureDetector(
       onTap: () async {
-         try {
+        try {
     final supabase = Supabase.instance.client;
     if (areaController.text.isEmpty || durationController.text.isEmpty || vehicleNoController.text.isEmpty) {
       log('❌ All fields are required');
@@ -157,7 +158,7 @@ void showPatrolBottomSheet(BuildContext context) {
 }
 
 class BottomSheetSubmitButton extends StatelessWidget {
-  const BottomSheetSubmitButton({
+  const BottomSheetSubmitButton(Set<dynamic> set, {
     super.key,
   });
 

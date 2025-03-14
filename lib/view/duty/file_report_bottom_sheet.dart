@@ -1,15 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void showReportBottomSheet(BuildContext context) {
   TextEditingController typeController = TextEditingController();
-  TextEditingController vehicleNoController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     builder: (BuildContext context) {
-      return Container(
+      return Container(height: Get.height * 0.9,
         padding: EdgeInsets.only(
           left: 20,
           right: 20,
@@ -30,7 +34,7 @@ void showReportBottomSheet(BuildContext context) {
           ),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
@@ -67,7 +71,7 @@ void showReportBottomSheet(BuildContext context) {
               height: 20,
             ),
             StartPatrolContainer(
-              itemName: 'Type',
+            itemName: 'Type',
               textEditingController: typeController,
             ),
             SizedBox(
@@ -75,22 +79,84 @@ void showReportBottomSheet(BuildContext context) {
             ),
             StartPatrolContainer(
               itemName: 'Location',
-              textEditingController: TextEditingController(),
+              textEditingController: locationController,
             ),
             SizedBox(
               height: 24,
             ),
             StartPatrolContainer(
               itemName: 'Description',
-              textEditingController: TextEditingController(),
+              textEditingController: descriptionController,
             ),
             SizedBox(
               height: 24,
             ),
-            BottomSheetSubmitButton(),
+            GestureDetector(
+      onTap: () async {
+        try {
+    final supabase = Supabase.instance.client;
+
+    // ✅ Insert user data into the 'logintable'
+    final response = await supabase.from('report_details').insert({
+      'type': typeController.text,
+      'location': locationController.text,
+      'description': descriptionController.text,
+    });
+
+    if (response.error == null) {
+      log('✅ User details added successfully');
+    } else {
+      log('❌ Error inserting user: ${response.error!.message}');
+    }
+  } catch (e) {
+    log('❌ Exception: $e');
+  }
+        Get.back();
+      },
+      child: Center(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          width: Get.width * 0.4,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+              color: Colors.white,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              "Submit",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    )
           ],
         ),
       );
     },
   );
 }
+
+// class StartReportContainer extends StatelessWidget {
+//   final textEditingController;
+//   final String itemName;
+
+//   const StartReportContainer({
+//     super.key,
+//     required this.itemName,
+//     required this.textEditingController
+//   });
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     throw UnimplementedError();
+//   }
+// }
