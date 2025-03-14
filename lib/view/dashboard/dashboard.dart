@@ -1,11 +1,16 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:policex/controller/duty_controller.dart';
 import 'package:policex/controller/user_controller.dart';
 import 'package:policex/core/images/images.dart';
+import 'package:policex/services/attendance_service.dart';
 import 'package:policex/view/common_widgets/case_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -17,17 +22,35 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final DutyController dutyController = Get.find<DutyController>();
   final UserController userController = Get.find<UserController>();
-
-  String officerName = ''; // ✅ Variable to store officer's name
+  static const String _logTag = 'DashboardPage';
+  
+  String officerName = '';
+  DateTime currentTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    loadOfficerName(); // ✅ Load officer's name on init
+    loadOfficerName();
+    
+    // Update the time every minute
+    _startTimeUpdater();
   }
 
-  /// ✅ Load officer's name from SharedPreferences
+  // Start a timer to update the time display
+  void _startTimeUpdater() {
+    Future.delayed(const Duration(minutes: 1), () {
+      if (mounted) {
+        setState(() {
+          currentTime = DateTime.now();
+        });
+        _startTimeUpdater();
+      }
+    });
+  }
+
+  /// Load officer's name from SharedPreferences
   Future<void> loadOfficerName() async {
+    developer.log('Loading officer name', name: _logTag);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       officerName = userController.userResult['Name'] ?? 'Officer';
@@ -91,7 +114,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  /// ✅ Top Bar Section
+  /// Top Bar Section
   Container topBar(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
@@ -119,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ✅ Officer Name and Profile Section
+          // Officer Name and Profile Section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -166,7 +189,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
 
-              // ✅ Duty Status
+              // Duty Status
               GetBuilder<UserController>(
                 id: 'checkin_status',
                 builder: (userController) {
@@ -201,7 +224,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Divider(color: Colors.black.withOpacity(0.1)),
           const SizedBox(height: 10),
 
-          // ✅ Date and Time Section
+          // Date and Time Section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -213,7 +236,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    DateFormat("d MMMM, y").format(DateTime.now()),
+                    DateFormat("d MMMM, y").format(currentTime),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -232,7 +255,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       border: Border.all(color: Colors.white, width: 0.75),
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: Text(
+child: Text(
                       '${userController.workShift['name']} Shift',
                       style: const TextStyle(
                         fontSize: 12,
@@ -247,7 +270,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            DateFormat("hh:mm a").format(DateTime.now()),
+            DateFormat("hh:mm a").format(currentTime),
             style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w700,
@@ -256,10 +279,18 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           const SizedBox(height: 12),
 
-          // ✅ Check-In/Check-Out Button
+          // Check-In/Check-Out Button - Modified to use the new functionality
           GestureDetector(
-            onTap: () {
-              userController.setCheckInStatus(!userController.isCheckedIn);
+            onTap: () async {
+              developer.log('Check-in/out button tapped', name: _logTag);
+              final supabaseClient = Supabase.instance.client;
+              AttendanceService attendanceService = AttendanceService(supabaseClient);
+              if(await attendanceService.isCheckedIn()) {
+                await attendanceService.checkOut();
+              } else {
+                await attendanceService.checkIn();
+              }
+              await userController.setCheckInStatus(!userController.isCheckedIn);
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -278,9 +309,9 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Center(
                 child: GetBuilder<UserController>(
                   id: 'checkin_status',
-                  builder: (context) {
+                  builder: (controller) {
                     return Text(
-                      userController.isCheckedIn ? 'Check-Out' : 'Check-In',
+                      controller.isCheckedIn ? 'Check-Out' : 'Check-In',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
