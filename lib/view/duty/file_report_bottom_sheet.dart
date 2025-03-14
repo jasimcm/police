@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:policex/view/duty/start_patrol_bottom_sheet.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,6 +10,7 @@ void showReportBottomSheet(BuildContext context) {
   TextEditingController typeController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -91,16 +93,32 @@ void showReportBottomSheet(BuildContext context) {
             SizedBox(
               height: 24,
             ),
+            StartPatrolContainer(
+              itemName: 'Name',
+              textEditingController: nameController,
+            ),
             GestureDetector(
-      onTap: () async {
+              onTap: () async {
         try {
-    final supabase = Supabase.instance.client;
-
+            final supabase = Supabase.instance.client;
+            if (locationController.text.isEmpty || descriptionController.text.isEmpty|| typeController.text.isEmpty|| nameController.text.isEmpty) {
+              log('❌ All fields are required');
+              Fluttertoast.showToast(
+        msg: "All fields are required",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+            );
+              return;
+            }
     // ✅ Insert user data into the 'logintable'
     final response = await supabase.from('report_details').insert({
       'type': typeController.text,
       'location': locationController.text,
       'description': descriptionController.text,
+      'name': nameController.text,
     });
 
     if (response.error == null) {
