@@ -60,7 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:Colors.black,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -94,7 +94,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       },
                       itemBuilder: (context, index) {
                         return CaseItem(
-                          dutyController.cases[index]['id'].toString(),
+                          dutyController.cases[index]['type'].toString(),
                           Colors.red,
                         );
                       },

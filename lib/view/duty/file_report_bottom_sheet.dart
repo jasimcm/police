@@ -94,43 +94,80 @@ void showReportBottomSheet(BuildContext context) {
               height: 24,
             ),
             StartPatrolContainer(
-              itemName: 'Name',
+              itemName: 'Officer',
               textEditingController: nameController,
             ),
             GestureDetector(
-              onTap: () async {
-        try {
-            final supabase = Supabase.instance.client;
-            if (locationController.text.isEmpty || descriptionController.text.isEmpty|| typeController.text.isEmpty|| nameController.text.isEmpty) {
-              log('❌ All fields are required');
-              Fluttertoast.showToast(
+           onTap: () async {
+  try {
+    final supabase = Supabase.instance.client;
+    
+    // ✅ Validate fields
+    if (locationController.text.isEmpty || 
+        descriptionController.text.isEmpty || 
+        typeController.text.isEmpty || 
+        nameController.text.isEmpty) {
+      log('❌ All fields are required');
+      Fluttertoast.showToast(
         msg: "All fields are required",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0
-            );
-              return;
-            }
-    // ✅ Insert user data into the 'logintable'
+        fontSize: 16.0,
+      );
+      return;
+    }
+
+    // ✅ Fetch the corresponding 'kid' from logintable based on officer name
+    final kidResponse = await supabase
+        .from('logintable')
+        .select('kid')
+        .eq('Name', nameController.text)
+        .maybeSingle();
+
+    if (kidResponse == null) {
+      log('❌ Officer not found');
+      Fluttertoast.showToast(
+        msg: "Officer not found",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return;
+    }
+
+    final kid = kidResponse['kid'];
+
+    // ✅ Insert into 'report_details' including 'kid'
     final response = await supabase.from('report_details').insert({
       'type': typeController.text,
       'location': locationController.text,
       'description': descriptionController.text,
       'name': nameController.text,
+      'kid': kid, // Add the kid value
     });
 
     if (response.error == null) {
-      log('✅ User details added successfully');
+      log('✅ Report added successfully');
+      Fluttertoast.showToast(
+        msg: "Report added successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Get.back();
     } else {
-      log('❌ Error inserting user: ${response.error!.message}');
+      log('❌ Error inserting report: ${response.error!.message}');
     }
   } catch (e) {
     log('❌ Exception: $e');
   }
-        Get.back();
-      },
+},
       child: Center(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),

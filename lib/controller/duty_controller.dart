@@ -6,74 +6,38 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DutyController extends GetxController {
+  final UserController userController = Get.find<UserController>();
+  final _supabaseClient = Supabase.instance.client;
 
-final UserController userController = Get.find<UserController>();
+  List<Map<String, dynamic>> cases = [];
+  int dutyIndex = 0;
+  final tabBars = ['Active', 'Closed', 'All'];
 
-final _supabaseClient = Supabase.instance.client;
+  @override
+  void onInit() {
+    super.onInit();
+    fetchReports(); // Fetch reports when the controller is initialized
+  }
 
   Future<void> fetchReports() async {
     log('Fetching reports');
     try {
       final response = await _supabaseClient
           .from('report_details')
-          .select().filter('kid','eq',userController.userResult['kid']);
+          .select()
+          .filter('kid', 'eq', userController.userResult['kid']);
       
-      log('Fetched ${response.length} repoorts');
+      log('Fetched ${response.length} reports');
       cases = response;
+      update(['duty_tabs']); // Update the UI after fetching reports
     } catch (e) {
       log('Error fetching report history', error: e.toString());
-      throw e;
+      cases = []; // Reset cases on error
+      update(['duty_tabs']); // Update the UI to reflect the error
     }
   }
 
-
-  @override
-  onInit(){
-    super.onInit();
-  }
-  int dutyIndex = 0;
-
-  final tabBars = ['Active', 'Closed', 'All'];
-
-  List<Map<String, dynamic>> cases = [
-    {
-      'name': 'KNM/2024/07489',
-      'color': Colors.red,
-      'status': true,
-    },
-    {
-      'name': 'EKM/2024/02234',
-      'color': Colors.green,
-      'status': false,
-    },
-    {
-      'name': 'TVM/2023/23405',
-      'color': Colors.blue,
-      'status': true,
-    },
-    {
-      'name': 'THR/2023/23450',
-      'color': Colors.grey,
-      'status': true,
-    },
-    {
-      'name': 'EKM/2024/02234',
-      'color': Colors.green,
-      'status': false,
-    },
-    {
-      'name': 'TVM/2023/23405',
-      'color': Colors.blue,
-      'status': true,
-    },
-    {
-      'name': 'THR/2023/23450',
-      'color': Colors.grey,
-      'status': true,
-    },
-  ];
-
-  setDutyIndex(int index) {
+  void setDutyIndex(int index) {
     dutyIndex = index;
     update(['duty_tabs']);
   }

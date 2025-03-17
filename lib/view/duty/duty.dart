@@ -69,8 +69,6 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
         padding: EdgeInsets.only(
           top: Get.mediaQuery.padding.top * 1.25,
           bottom: 0,
-          // left: 16,
-          // right: 16,
         ),
         child: Column(
           children: [
@@ -111,20 +109,24 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                       },
                       child: Container(
                         width: 100,
-                        // height: 120,
                         padding: EdgeInsets.symmetric(
                           horizontal: 4,
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey.withOpacity(0.3),
+                          color: Colors.grey.withOpacity(0.3), // Adjust opacity
+
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            quickActions[index]['actionIcon'],
+                            Opacity(
+                              opacity: 1.0,
+                              child: quickActions[index]['actionIcon'],
+                            ), // Adjust opacity
+
                             SizedBox(
                               height: 8,
                             ),
@@ -232,7 +234,6 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                             SizedBox(
                               height: Get.height * 0.6,
                               child: ListView.separated(
-                                // physics: NeverScrollableScrollPhysics(),
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 itemCount: dutyController.cases.length,
@@ -241,7 +242,8 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                   switch (dutyController.dutyIndex) {
                                     case 0:
                                       if (dutyController.cases[index]
-                                          ['status']) {
+                                          ['status'] != null && dutyController.cases[index]['status']) {
+
                                         return SizedBox(
                                           height: 4,
                                         );
@@ -267,7 +269,7 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                 },
                                 itemBuilder: (context, index) {
                                   return CaseItem(
-                                        dutyController.cases[index]['id'].toString(),
+                                        '${dutyController.cases[index]['type']}, ${dutyController.cases[index]['location']}',
                                         Colors.red,
                                       );
                                 },
