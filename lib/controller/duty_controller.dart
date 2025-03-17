@@ -41,4 +41,23 @@ class DutyController extends GetxController {
     dutyIndex = index;
     update(['duty_tabs']);
   }
+
+  // ✅ New Method to Update Case Status in Supabase
+  Future<void> updateCaseStatus(String caseId, bool isClosed) async {
+  try {
+    await _supabaseClient
+        .from('report_details')
+        .update({'status': isClosed}) // ✅ Passing boolean
+        .eq('id', caseId);
+
+    // ✅ Update locally after successful DB update
+    int index = cases.indexWhere((caseItem) => caseItem['id'].toString() == caseId);
+    if (index != -1) {
+      cases[index]['status'] = isClosed;
+      update(['duty_tabs']);
+    }
+  } catch (e) {
+    log('Error updating case status: $e');
+  }
+}
 }

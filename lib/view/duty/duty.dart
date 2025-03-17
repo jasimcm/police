@@ -8,6 +8,8 @@ import 'package:PoliceX/view/duty/file_report_bottom_sheet.dart';
 import 'package:PoliceX/view/duty/log_incident_bottom_sheet.dart';
 import 'package:PoliceX/view/duty/start_patrol_bottom_sheet.dart';
 import 'package:PoliceX/view/duty/submit_expense_bottom_sheet.dart';
+import '../common_widgets/case_details_overlay.dart';
+
 
 class DutySchedulePage extends StatefulWidget {
   const DutySchedulePage({super.key});
@@ -241,8 +243,11 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                     (BuildContext context, int index) {
                                   switch (dutyController.dutyIndex) {
                                     case 0:
-                                      if (dutyController.cases[index]
-                                          ['status'] != null && dutyController.cases[index]['status']) {
+                                    bool isOpen = dutyController.cases[index]['status'] == 'open';
+                                      if (isOpen) {
+
+                                      // if (dutyController.cases[index]
+                                          // ['status'] != null && dutyController.cases[index]['status']) {
 
                                         return SizedBox(
                                           height: 4,
@@ -268,11 +273,20 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                   }
                                 },
                                 itemBuilder: (context, index) {
-                                  return CaseItem(
-                                        '${dutyController.cases[index]['type']}, ${dutyController.cases[index]['location']}',
-                                        Colors.red,
-                                      );
-                                },
+  return GestureDetector(
+    onTap: () {
+  Get.dialog(
+    CaseDetailsOverlay(caseId: dutyController.cases[index]['id'].toString()),
+  );
+},
+
+    child: CaseItem(
+      '${dutyController.cases[index]['type']}, ${dutyController.cases[index]['location']}',
+      Colors.red,
+    ),
+  );
+},
+
                               ),
                             ),
                           ],
