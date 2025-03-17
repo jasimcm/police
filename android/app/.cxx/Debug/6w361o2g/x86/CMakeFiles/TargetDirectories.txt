@@ -1,2 +1,0 @@
-C:/Users/ASUS/Police/police-2/android/app/.cxx/Debug/6w361o2g/x86/CMakeFiles/edit_cache.dir
-C:/Users/ASUS/Police/police-2/android/app/.cxx/Debug/6w361o2g/x86/CMakeFiles/rebuild_cache.dir
