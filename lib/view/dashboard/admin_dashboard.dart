@@ -1,4 +1,5 @@
 import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/view/dashboard/expense_details_page.dart';
 import 'package:PoliceX/view/dashboard/incident_log_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -269,7 +270,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.car_crash_rounded,
               label: 'Patrol Details',
               color: Colors.orange,
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>PatrolDetailsPage())),
+              onTap: () => Get.toNamed('/patrol-details'),
             ),
             const SizedBox(height: 12),
             _buildDashboardButton(
@@ -290,7 +291,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.attach_money,
               label: 'Duty Expense',
               color: Colors.teal,
-              onTap: () => Get.toNamed('/duty-expense'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>ExpenseDetailsPage(),),),
             ),
             
           ],

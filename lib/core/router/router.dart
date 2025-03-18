@@ -1,3 +1,4 @@
+import 'package:PoliceX/view/dashboard/expense_details_page.dart';
 import 'package:PoliceX/view/dashboard/incident_log_page.dart';
 import 'package:get/get.dart';
 import 'package:PoliceX/view/home/home.dart';
@@ -69,6 +70,10 @@ GetPage(
   name: RouterName.incidentLog,
   page: () => IncidentLogPage(),
 ),
+GetPage(
+  name: RouterName.expenseDetails,
+  page: () => ExpenseDetailsPage(),
+),
 
 
   ];
@@ -88,6 +93,8 @@ class RouterName {
   static const String scheduler = '/scheduler';
   static const String patrolDetails = '/patrol-details';
   static const String incidentLog = '/incident-log';
+  static const String expenseDetails = '/expense-details';
+
 
 
 }

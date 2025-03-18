@@ -77,6 +77,20 @@ Future<void> fetchIncidentDetails() async {
     isLoading(false);
   }
 }
+Future<void> fetchExpenseDetails() async {
+  try {
+    isLoading(true);
+    final response =
+        await Supabase.instance.client.from('expense_details').select();
+
+    patrolDetails.assignAll(response);
+    log('✅ Fetched ${response.length} expense details');
+  } catch (e) {
+    log('❌ Error fetching expense details: $e');
+  } finally {
+    isLoading(false);
+  }
+}
 
 
 
