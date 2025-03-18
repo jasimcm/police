@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:PoliceX/controller/user_controller.dart';
 import 'package:PoliceX/services/attendance_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'reports_filed_page.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -259,7 +260,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.assignment,
               label: 'Reports Filed',
               color: Colors.green,
-              onTap: () => Get.toNamed('/reports'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsFiledPage())),
             ),
             const SizedBox(height: 12),
             _buildDashboardButton(

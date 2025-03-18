@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DutyController extends GetxController {
+  var isLoading = false.obs; // Add loading state
+
   final UserController userController = Get.find<UserController>();
   final _supabaseClient = Supabase.instance.client;
 
@@ -20,7 +22,9 @@ class DutyController extends GetxController {
   }
 
   Future<void> fetchReports() async {
-    log('Fetching reports');
+    isLoading.value = true; // Set loading to true
+    log('Fetching reports'); 
+
     try {
       final response = await _supabaseClient
           .from('report_details')
@@ -28,10 +32,14 @@ class DutyController extends GetxController {
           .filter('kid', 'eq', userController.userResult['kid']);
       
       log('Fetched ${response.length} reports');
-      cases = response;
+      cases = response; 
+      isLoading.value = false; // Set loading to false after fetching
+
       update(['duty_tabs']); // Update the UI after fetching reports
     } catch (e) {
-      log('Error fetching report history', error: e.toString());
+      log('Error fetching report history', error: e.toString()); 
+      isLoading.value = false; // Set loading to false on error
+
       cases = []; // Reset cases on error
       update(['duty_tabs']); // Update the UI to reflect the error
     }

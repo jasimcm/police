@@ -24,6 +24,10 @@ class CaseDetailsOverlay extends StatelessWidget {
       );
     }
 
+    // Determine the color based on the case status
+    Color statusColor = caseDetails['status'] ? Colors.red : Colors.green;
+    String statusText = caseDetails['status'] ? "Open" : "Closed";
+
     return Material(
       color: Colors.black.withOpacity(0.5), // Reduced opacity for better contrast
       child: Center(
@@ -120,32 +124,42 @@ class CaseDetailsOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
+                // ✅ Status Label
+                Text(
+                  'Status: $statusText',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: statusColor, // Change color based on status
+                  ),
+                ),
+                const SizedBox(height: 16),
+
                 // ✅ Buttons Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Close Case Button
                     ElevatedButton(
-  onPressed: () async {
-    await dutyController.updateCaseStatus(
-      caseId,
-      true, // ✅ Change to boolean true for 'Closed'
-    );
-    Get.back();
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.red,
-    padding: const EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 8,
-    ),
-  ),
-  child: const Text(
-    'Close Case',
-    style: TextStyle(color: Colors.white),
-  ),
-),
-
+                      onPressed: () async {
+                        await dutyController.updateCaseStatus(
+                          caseId,
+                          false, // Set to FALSE when closing the case
+                        );
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                      ),
+                      child: const Text(
+                        'Close Case',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
 
                     // Close Button
                     ElevatedButton(

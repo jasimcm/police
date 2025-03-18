@@ -88,15 +88,18 @@ class _DashboardPageState extends State<DashboardPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
-                      itemCount: dutyController.cases.length,
+                      itemCount: dutyController.cases.where((caseItem) => caseItem['status']).length, // Filter active cases
+
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(height: 4);
                       },
                       itemBuilder: (context, index) {
+                        var activeCase = dutyController.cases.where((caseItem) => caseItem['status']).toList()[index]; // Get the active case
                         return CaseItem(
-                          dutyController.cases[index]['type'].toString(),
+                          activeCase['type'].toString(),
                           Colors.red,
                         );
+
                       },
                     ),
                   ),

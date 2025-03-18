@@ -10,7 +10,6 @@ import 'package:PoliceX/view/duty/start_patrol_bottom_sheet.dart';
 import 'package:PoliceX/view/duty/submit_expense_bottom_sheet.dart';
 import '../common_widgets/case_details_overlay.dart';
 
-
 class DutySchedulePage extends StatefulWidget {
   const DutySchedulePage({super.key});
 
@@ -118,7 +117,6 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.grey.withOpacity(0.3), // Adjust opacity
-
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -241,52 +239,30 @@ class _DutySchedulePageState extends State<DutySchedulePage> {
                                 itemCount: dutyController.cases.length,
                                 separatorBuilder:
                                     (BuildContext context, int index) {
-                                  switch (dutyController.dutyIndex) {
-                                    case 0:
-                                    bool isOpen = dutyController.cases[index]['status'] == 'open';
-                                      if (isOpen) {
-
-                                      // if (dutyController.cases[index]
-                                          // ['status'] != null && dutyController.cases[index]['status']) {
-
-                                        return SizedBox(
-                                          height: 4,
-                                        );
-                                      } else {
-                                        return SizedBox();
-                                      }
-                                    case 1:
-                                      if (!dutyController.cases[index]
-                                          ['status']) {
-                                        return SizedBox(
-                                          height: 4,
-                                        );
-                                      } else {
-                                        return SizedBox();
-                                      }
-                                    case 2:
-                                      return SizedBox(
-                                        height: 4,
-                                      );
-                                    default:
-                                      return SizedBox();
-                                  }
+                                      return SizedBox(height: 4);
                                 },
                                 itemBuilder: (context, index) {
-  return GestureDetector(
-    onTap: () {
-  Get.dialog(
-    CaseDetailsOverlay(caseId: dutyController.cases[index]['id'].toString()),
-  );
-},
+                                  bool isActive = dutyController.dutyIndex == 0 && dutyController.cases[index]['status'];
+                                  bool isClosed = dutyController.dutyIndex == 1 && !dutyController.cases[index]['status'];
+                                  bool isAll = dutyController.dutyIndex == 2;
 
-    child: CaseItem(
-      '${dutyController.cases[index]['type']}, ${dutyController.cases[index]['location']}',
-      Colors.red,
-    ),
-  );
-},
-
+                                  if (isActive || isClosed || isAll) {
+                                    Color caseColor = dutyController.cases[index]['status'] ? Colors.red : Colors.green;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.dialog(
+                                          CaseDetailsOverlay(caseId: dutyController.cases[index]['id'].toString()),
+                                        );
+                                      },
+                                      child: CaseItem(
+                                        '${dutyController.cases[index]['type']}, ${dutyController.cases[index]['location']}',
+                                        caseColor,
+                                      ),
+                                    );
+                                  } else {
+                                    return SizedBox(); // Skip this item
+                                  }
+                                },
                               ),
                             ),
                           ],
