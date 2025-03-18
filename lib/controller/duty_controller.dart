@@ -6,7 +6,11 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DutyController extends GetxController {
-  var isLoading = false.obs; // Add loading state
+  var isLoading = false.obs;
+  var patrolDetails = <Map<String, dynamic>>[].obs;
+  var incidentDetails= <Map<String, dynamic>>[].obs;
+
+   // Add loading state
 
   final UserController userController = Get.find<UserController>();
   final _supabaseClient = Supabase.instance.client;
@@ -44,6 +48,38 @@ class DutyController extends GetxController {
       update(['duty_tabs']); // Update the UI to reflect the error
     }
   }
+  Future<void> fetchPatrolDetails() async {
+  try {
+    isLoading(true);
+    final response =
+        await Supabase.instance.client.from('patrol_details').select();
+
+    log('✅ Fetched Patrol Details: $response'); // ✅ Add this
+    patrolDetails.assignAll(response);
+  } catch (e) {
+    print('❌ Error fetching patrol details: $e');
+  } finally {
+    isLoading(false);
+  }
+}
+
+Future<void> fetchIncidentDetails() async {
+  try {
+    isLoading(true);
+    final response =
+        await Supabase.instance.client.from('incident_details').select();
+
+    incidentDetails.assignAll(response);
+    print('✅ Fetched ${incidentDetails.length} incidents');
+  } catch (e) {
+    print('❌ Error fetching incident details: $e');
+  } finally {
+    isLoading(false);
+  }
+}
+
+
+
 
   void setDutyIndex(int index) {
     dutyIndex = index;

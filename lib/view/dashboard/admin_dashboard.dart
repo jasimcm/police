@@ -1,4 +1,5 @@
 import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/view/dashboard/incident_log_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,7 @@ import 'package:PoliceX/controller/user_controller.dart';
 import 'package:PoliceX/services/attendance_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'reports_filed_page.dart';
+import 'patrol_details_page.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -245,7 +247,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   SingleChildScrollView _buildContent() {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 300, bottom: 100),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 370, bottom: 100),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -267,7 +269,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.car_crash_rounded,
               label: 'Patrol Details',
               color: Colors.orange,
-              onTap: () => Get.toNamed('/patrol-details'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>PatrolDetailsPage())),
             ),
             const SizedBox(height: 12),
             _buildDashboardButton(
@@ -281,7 +283,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.event_note,
               label: 'Incident Log',
               color: Colors.red,
-              onTap: () => Get.toNamed('/incident-log'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>IncidentLogPage())),
             ),
             const SizedBox(height: 12),
             _buildDashboardButton(

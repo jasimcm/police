@@ -1,3 +1,4 @@
+import 'package:PoliceX/view/dashboard/incident_log_page.dart';
 import 'package:get/get.dart';
 import 'package:PoliceX/view/home/home.dart';
 import 'package:PoliceX/view/login/login.dart';
@@ -9,7 +10,8 @@ import 'package:PoliceX/view/settings/security.dart';
 import 'package:PoliceX/view/settings/termsandpolicies.dart';
 import 'package:PoliceX/view/splash/splash.dart';
 import 'package:PoliceX/view/dashboard/admin_dashboard.dart';
-import 'package:PoliceX/view/dashboard/reports_filed_page.dart'; // ✅ Import ReportsFiledPage
+import 'package:PoliceX/view/dashboard/reports_filed_page.dart';
+import 'package:PoliceX/view/dashboard/patrol_details_page.dart'; // ✅ Import ReportsFiledPage
 
 class AppRoute {
   static const String initialRoute = RouterName.splash;
@@ -59,6 +61,16 @@ class AppRoute {
       name: RouterName.scheduler,
       page: () => SchedulerPage(),
     ),
+    GetPage(
+  name: RouterName.patrolDetails,
+  page: () => const PatrolDetailsPage(),
+),
+GetPage(
+  name: RouterName.incidentLog,
+  page: () => IncidentLogPage(),
+),
+
+
   ];
 }
 
@@ -74,4 +86,8 @@ class RouterName {
   static const String security = '/security';
   static const String termsConditions = '/termsConditions';
   static const String scheduler = '/scheduler';
+  static const String patrolDetails = '/patrol-details';
+  static const String incidentLog = '/incident-log';
+
+
 }
