@@ -1,6 +1,8 @@
 import 'package:PoliceX/controller/user_controller.dart';
+import 'package:PoliceX/view/dashboard/duty_scheduler.dart';
 import 'package:PoliceX/view/dashboard/expense_details_page.dart';
 import 'package:PoliceX/view/dashboard/incident_log_page.dart';
+import 'package:PoliceX/view/scheduler/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -277,7 +279,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               icon: Icons.schedule,
               label: 'Duty Schedule',
               color: Colors.purple,
-              onTap: () => Get.toNamed('/duty-schedule'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>DutySchedulerPage())),
             ),
             const SizedBox(height: 12),
             _buildDashboardButton(

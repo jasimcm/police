@@ -7,10 +7,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DutyController extends GetxController {
   var isLoading = false.obs;
+  var dutyDetails = <Map<String, dynamic>>[].obs;
   var patrolDetails = <Map<String, dynamic>>[].obs;
-  var incidentDetails= <Map<String, dynamic>>[].obs;
-
-   // Add loading state
+  var incidentDetails = <Map<String, dynamic>>[].obs;
+  var expenseDetails = <Map<String, dynamic>>[].obs; // Added for expense details
 
   final UserController userController = Get.find<UserController>();
   final _supabaseClient = Supabase.instance.client;
@@ -33,7 +33,7 @@ class DutyController extends GetxController {
       final response = await _supabaseClient
           .from('report_details')
           .select()
-          .filter('kid', 'eq', userController.userResult['kid']);
+          .eq('kid', userController.userResult['kid']); // Corrected method for filtering
       
       log('Fetched ${response.length} reports');
       cases = response; 
@@ -48,52 +48,51 @@ class DutyController extends GetxController {
       update(['duty_tabs']); // Update the UI to reflect the error
     }
   }
+
   Future<void> fetchPatrolDetails() async {
-  try {
-    isLoading(true);
-    final response =
-        await Supabase.instance.client.from('patrol_details').select();
+    try {
+      isLoading(true);
+      final response =
+          await Supabase.instance.client.from('patrol_details').select();
 
-    log('✅ Fetched Patrol Details: $response'); // ✅ Add this
-    patrolDetails.assignAll(response);
-  } catch (e) {
-    print('❌ Error fetching patrol details: $e');
-  } finally {
-    isLoading(false);
+      log('✅ Fetched Patrol Details: $response'); // ✅ Add this
+      patrolDetails.assignAll(response);
+    } catch (e) {
+      log('❌ Error fetching patrol details: $e'); // Changed print to log for consistency
+    } finally {
+      isLoading(false);
+    }
   }
-}
 
-Future<void> fetchIncidentDetails() async {
-  try {
-    isLoading(true);
-    final response =
-        await Supabase.instance.client.from('incident_details').select();
+  Future<void> fetchIncidentDetails() async {
+    try {
+      isLoading(true);
+      final response =
+          await Supabase.instance.client.from('incident_details').select();
 
-    incidentDetails.assignAll(response);
-    print('✅ Fetched ${incidentDetails.length} incidents');
-  } catch (e) {
-    print('❌ Error fetching incident details: $e');
-  } finally {
-    isLoading(false);
+      incidentDetails.assignAll(response);
+      log('✅ Fetched ${incidentDetails.length} incidents'); // Changed print to log for consistency
+    } catch (e) {
+      log('❌ Error fetching incident details: $e'); // Changed print to log for consistency
+    } finally {
+      isLoading(false);
+    }
   }
-}
-Future<void> fetchExpenseDetails() async {
-  try {
-    isLoading(true);
-    final response =
-        await Supabase.instance.client.from('expense_details').select();
 
-    patrolDetails.assignAll(response);
-    log('✅ Fetched ${response.length} expense details');
-  } catch (e) {
-    log('❌ Error fetching expense details: $e');
-  } finally {
-    isLoading(false);
+  Future<void> fetchExpenseDetails() async {
+    try {
+      isLoading(true);
+      final response =
+          await Supabase.instance.client.from('expense_details').select();
+
+      expenseDetails.assignAll(response); // Corrected assignment to expenseDetails
+      log('✅ Fetched ${response.length} expense details'); // Added logging for fetched expense details
+    } catch (e) {
+      log('❌ Error fetching expense details: $e');
+    } finally {
+      isLoading(false);
+    }
   }
-}
-
-
-
 
   void setDutyIndex(int index) {
     dutyIndex = index;
@@ -102,20 +101,43 @@ Future<void> fetchExpenseDetails() async {
 
   // ✅ New Method to Update Case Status in Supabase
   Future<void> updateCaseStatus(String caseId, bool isClosed) async {
-  try {
-    await _supabaseClient
-        .from('report_details')
-        .update({'status': isClosed}) // ✅ Passing boolean
-        .eq('id', caseId);
+    try {
+      await _supabaseClient
+          .from('report_details')
+          .update({'status': isClosed}) // ✅ Passing boolean
+          .eq('id', caseId);
 
-    // ✅ Update locally after successful DB update
-    int index = cases.indexWhere((caseItem) => caseItem['id'].toString() == caseId);
-    if (index != -1) {
-      cases[index]['status'] = isClosed;
-      update(['duty_tabs']);
+      // ✅ Update locally after successful DB update
+      int index = cases.indexWhere((caseItem) => caseItem['id'].toString() == caseId);
+      if (index != -1) {
+        cases[index]['status'] = isClosed;
+        update(['duty_tabs']);
+      }
+    } catch (e) {
+      log('Error updating case status: $e');
     }
-  } catch (e) {
-    log('Error updating case status: $e');
   }
-}
+
+  Future<void> fetchDutyByKid(String kid) async {
+    isLoading(true);
+    final supabase = Supabase.instance.client;
+
+    try {
+      final response = await supabase
+          .from('duty_schedule')
+          .select()
+          .eq('kid', kid) // Corrected method for filtering
+          .order('date', ascending: false);
+
+      if (response.isNotEmpty) {
+        dutyDetails.assignAll(response);
+      } else {
+        dutyDetails.clear();
+      }
+    } catch (e) {
+      log('Error fetching duty by kid: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
 }
