@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:PoliceX/controller/scheduler_controller.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SchedulerPage extends StatefulWidget {
   const SchedulerPage({super.key});
@@ -11,8 +14,10 @@ class SchedulerPage extends StatefulWidget {
 }
 
 class _SchedulerPageState extends State<SchedulerPage> {
-  final SchedulerController schedulerController =
-      Get.find<SchedulerController>();
+  final TextEditingController officerController = TextEditingController();
+  String? selectedShift;
+  DateTime? selectedDate;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,246 +25,235 @@ class _SchedulerPageState extends State<SchedulerPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-            'Schedule - ${DateFormat('dd MMM yyyy').format(DateTime.now().add(Duration(days: 1)))}'),
+          'Schedule - ${DateFormat('dd MMM yyyy').format(DateTime.now().add(const Duration(days: 1)))}',
+        ),
       ),
       body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.only(
-          top: 24,
-          left: 16,
-          right: 16,
-        ),
+        padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Officer'),
-                  Row(
-                    children: [
-                      Text('Day'),
-                      SizedBox(
-                        width: 36,
-                      ),
-                      Text('Night')
-                    ],
-                  )
-                ],
+            // Officer Name Field
+            Text(
+              'Officer',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: officerController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'Enter Officer Name',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+                filled: true,
+                fillColor: Colors.grey[900],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide:
+                      BorderSide(color: Colors.white.withOpacity(0.2)),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
             ),
-            SizedBox(
-              height: 12,
+            const SizedBox(height: 16),
+
+            // Date Picker
+            Text(
+              'Date',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
-            SizedBox(
-              height: Get.height * 0.725,
-              child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: Get.width,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 20,
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now().add(const Duration(days: 1)),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    selectedDate = pickedDate;
+                  });
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      selectedDate != null
+                          ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+                          : 'Select Date',
+                      style: const TextStyle(color: Colors.white),
                     ),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.1),
-                          blurRadius: 5,
-                          spreadRadius: 0.5,
-                        )
-                      ],
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0, 1],
-                        colors: [
-                          Color(0xFF16151B),
-                          Color(0xFF000000),
-                        ],
-                      ),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                        width: 0.5,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          schedulerController.officersShift[index]['name'],
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            // Day
-                            GestureDetector(
-                              onTap: () {
-                                schedulerController.setUserShift(index, 'Day');
-                              },
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                children: [
-                                  Container(
-                                    width: 16,
-                                    height: 16,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                  GetBuilder<SchedulerController>(
-                                    id: 'user_shifts',
-                                    builder: (sc) {
-                                      if (sc.officersShift[index]['shift'] ==
-                                          'Day') {
-                                        return Icon(
-                                          Icons.check_rounded,
-                                          size: 28,
-                                          color: Color(0xFF0A84FF),
-                                        );
-                                      } else {
-                                        return Icon(
-                                          Icons.check_rounded,
-                                          size: 28,
-                                          color: Colors.transparent,
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 48,
-                            ),
-                            // Night
-                            GestureDetector(
-                              onTap: () {
-                                schedulerController.setUserShift(
-                                    index, 'Night');
-                              },
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                children: [
-                                  Container(
-                                    width: 16,
-                                    height: 16,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                  GetBuilder<SchedulerController>(
-                                    id: 'user_shifts',
-                                    builder: (sc) {
-                                      if (sc.officersShift[index]['shift'] ==
-                                          'Night') {
-                                        return Icon(
-                                          Icons.check_rounded,
-                                          size: 28,
-                                          color: Color(0xFF0A84FF),
-                                        );
-                                      } else {
-                                        return Icon(
-                                          Icons.check_rounded,
-                                          size: 28,
-                                          color: Colors.transparent,
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-                itemCount: schedulerController.officersShift.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 16,
-                  );
-                },
+                    const Icon(Icons.calendar_today, color: Colors.white),
+                  ],
+                ),
               ),
             ),
+            const SizedBox(height: 16),
+
+            // Shift Picker
+            Text(
+              'Shift',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                ChoiceChip(
+                  label: const Text('Day'),
+                  selected: selectedShift == 'Day',
+                  onSelected: (selected) {
+                    setState(() {
+                      selectedShift = selected ? 'Day' : null;
+                    });
+                  },
+                  selectedColor: Colors.blue,
+                  backgroundColor: Colors.grey[800],
+                  labelStyle: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(width: 16),
+                ChoiceChip(
+                  label: const Text('Night'),
+                  selected: selectedShift == 'Night',
+                  onSelected: (selected) {
+                    setState(() {
+                      selectedShift = selected ? 'Night' : null;
+                    });
+                  },
+                  selectedColor: Colors.blue,
+                  backgroundColor: Colors.grey[800],
+                  labelStyle: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Action Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                // Cancel Button
                 GestureDetector(
                   onTap: () {
-                    schedulerController.resetOfficerShifts();
+                    officerController.clear();
+                    selectedDate = null;
+                    selectedShift = null;
+                    setState(() {});
                   },
-                  child: Center(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      width: Get.width * 0.4,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    width: Get.width * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.white),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
+
+                // Submit Button
                 GestureDetector(
-                  onTap: () {
-                    Get.back();
+                  onTap: () async {
+                    if (officerController.text.isEmpty ||
+                        selectedDate == null ||
+                        selectedShift == null) {
+                      Fluttertoast.showToast(
+                        msg: "All fields are required",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                      return;
+                    }
+
+                    try {
+                      final supabase = Supabase.instance.client;
+
+                      // Fetch 'kid' based on officer name
+                      final kidResponse = await supabase
+                          .from('logintable')
+                          .select('kid')
+                          .eq('Name', officerController.text)
+                          .maybeSingle();
+
+                      if (kidResponse == null) {
+                        Fluttertoast.showToast(
+                          msg: "Officer not found",
+                          backgroundColor: Colors.red,
+                        );
+                        return;
+                      }
+
+                      final kid = kidResponse['kid'];
+
+                      // Insert into duty_schedule table
+                      await supabase.from('duty_schedule').insert({
+                        'name': officerController.text,
+                        'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
+                        'time': selectedShift,
+                        'kid': kid,
+                      });
+
+                      Fluttertoast.showToast(
+                        msg: "Schedule added successfully",
+                        backgroundColor: Colors.green,
+                      );
+
+                      Get.back(); // ✅ Close on success
+                    } catch (e) {
+                      log('❌ Error: $e');
+                      Fluttertoast.showToast(
+                        msg: "Error occurred. Try again.",
+                        backgroundColor: Colors.red,
+                      );
+                    }
                   },
-                  child: Center(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      width: Get.width * 0.4,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    width: Get.width * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

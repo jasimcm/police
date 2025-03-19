@@ -10,6 +10,6 @@ Future<void> initDi() async {
   Get.put(HomeController());
   Get.put(UserController());
   Get.put(DutyController());
-  Get.put(SchedulerController());
+  // Get.put(SchedulerController());
   Get.put(SettingsController());
 }
